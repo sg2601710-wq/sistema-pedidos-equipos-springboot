@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: pedido-equipos-api
+  datasource:
+    url: jdbc:sqlite:data/pedido_equipos.sqlite
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
