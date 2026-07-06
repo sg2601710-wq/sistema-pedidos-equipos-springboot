@@ -1,0 +1,1 @@
+Outlet es donde se renderizan las rutas hijas del layout

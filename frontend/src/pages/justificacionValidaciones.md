@@ -1,0 +1,1 @@
+Validamos en el frontend para dar feedback inmediato y evitar requests innecesarias, pero validamos también en el backend porque el cliente no es confiable. El backend debe garantizar la seguridad y la integridad de los datos, ya que una persona podría saltearse el frontend y consumir la API directamente. Por eso la validación importante siempre debe existir del lado servidor

@@ -1,0 +1,1 @@
+La carpeta pages contiene las vistas principales de la aplicación, generalmente asociadas a rutas de React Router. Cada page representa una pantalla completa, como login, registro, listado de solicitudes o detalle de solicitud. Estas páginas pueden componer varios componentes reutilizables y manejar lógica específica de esa vista.

@@ -1,0 +1,5 @@
+La carpeta components contiene componentes reutilizables de React que representan partes de la interfaz, como encabezado, pie de página, formularios, listados o paneles. Sirve para dividir la UI en piezas más pequeñas, reutilizables y mantenibles, evitando repetir código dentro de las páginas.
+
+NavLink es un componente de React Router para navegar entre rutas. A diferencia de Link, permite saber si el enlace corresponde a la ruta actual mediante isActive. En este proyecto se usa en el encabezado para generar los botones de navegación y agregar la clase active al enlace seleccionado
+
+useNavigate es un hook de React Router que devuelve una función para cambiar de ruta desde el código. En este proyecto se usa en el encabezado para redirigir al usuario al login después de cerrar sesión. Sirve para navegación programática, no necesariamente iniciada por un enlace.

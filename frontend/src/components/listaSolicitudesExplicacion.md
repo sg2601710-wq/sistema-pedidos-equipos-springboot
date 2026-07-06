@@ -1,0 +1,1 @@
+Usamos Link en vez de NavLink porque acá estamos trabajando con botones de navegación puntulaes y no de navegación. Además, no necesitamos las propiedades específicas de NavLink (como isActive)

@@ -1,0 +1,1 @@
+La carpeta routes contiene componentes relacionados con la navegación y el control de acceso a rutas. En este proyecto, ProtectedRoute se usa para permitir o bloquear el acceso a ciertas páginas según si el usuario está autenticado y, opcionalmente, según su rol. Si no cumple las condiciones, redirige al login o a otra ruta.

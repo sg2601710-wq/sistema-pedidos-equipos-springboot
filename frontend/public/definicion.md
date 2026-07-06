@@ -1,0 +1,1 @@
+La carpeta public se utiliza para almacenar recursos estáticos del frontend, como íconos, favicons o archivos públicos. Estos archivos no se importan desde el código fuente, sino que se referencian mediante rutas directas y Vite los copia tal cual a la carpeta dist durante el build.

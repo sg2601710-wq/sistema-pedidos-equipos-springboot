@@ -1,0 +1,1 @@
+La carpeta assets contiene recursos visuales del frontend que forman parte del código fuente, como imágenes o SVGs. A diferencia de public, estos archivos suelen importarse desde componentes o estilos, y Vite los procesa durante el build. Sirve para organizar los recursos usados por la interfaz
