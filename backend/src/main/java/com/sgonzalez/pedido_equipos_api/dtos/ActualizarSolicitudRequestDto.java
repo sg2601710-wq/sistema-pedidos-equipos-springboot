@@ -1,12 +1,25 @@
 package com.sgonzalez.pedido_equipos_api.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class ActualizarSolicitudRequestDto {
 
+	@NotNull(message = "El equipo es obligatorio")
+	@Positive(message = "El equipo debe ser valido")
 	private Long equipoId;
+
+	@NotNull(message = "La fecha de retiro es obligatoria")
 	private LocalDate fechaRetiro;
+
+	@NotNull(message = "La fecha de devolucion es obligatoria")
 	private LocalDate fechaDevolucion;
+
+	@NotBlank(message = "El motivo es obligatorio")
+	@Size(max = 1000, message = "El motivo no puede superar los 1000 caracteres")
 	private String motivo;
 
 	public ActualizarSolicitudRequestDto() {

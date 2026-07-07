@@ -1,0 +1,36 @@
+package com.sgonzalez.pedido_equipos_api.controllers;
+
+import com.sgonzalez.pedido_equipos_api.dtos.ApiResponseDto;
+import com.sgonzalez.pedido_equipos_api.dtos.RolResponseDto;
+import com.sgonzalez.pedido_equipos_api.services.GestorConsultarRol;
+import com.sgonzalez.pedido_equipos_api.utils.ApiResponse;
+import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/roles")
+@CrossOrigin(origins = "*")
+public class PantConsultarRol {
+
+	private final GestorConsultarRol gestorConsultarRol;
+
+	public PantConsultarRol(GestorConsultarRol gestorConsultarRol) {
+		this.gestorConsultarRol = gestorConsultarRol;
+	}
+
+	@GetMapping
+	public ResponseEntity<ApiResponseDto<List<RolResponseDto>>> consultarRoles() {
+		return ResponseEntity.ok(ApiResponse.success("Roles consultados correctamente", gestorConsultarRol.consultarRoles()));
+	}
+
+	@GetMapping("/{nombre}")
+	public ResponseEntity<ApiResponseDto<RolResponseDto>> consultarRol(@PathVariable String nombre) {
+		return ResponseEntity.ok(ApiResponse.success("Rol consultado correctamente", gestorConsultarRol.consultarRol(nombre)));
+	}
+
+}

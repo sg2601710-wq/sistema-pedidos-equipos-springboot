@@ -1,12 +1,31 @@
 package com.sgonzalez.pedido_equipos_api.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class ActualizarEquipoRequestDto {
 
+	@NotBlank(message = "El codigo de inventario es obligatorio")
+	@Size(max = 255, message = "El codigo de inventario no puede superar los 255 caracteres")
 	private String codigoInventario;
+
+	@NotBlank(message = "El nombre es obligatorio")
+	@Size(max = 255, message = "El nombre no puede superar los 255 caracteres")
 	private String nombre;
+
+	@NotBlank(message = "La categoria es obligatoria")
+	@Size(max = 255, message = "La categoria no puede superar los 255 caracteres")
 	private String categoria;
+
+	@NotBlank(message = "El estado es obligatorio")
 	private String estado;
+
+	@NotBlank(message = "La ubicacion es obligatoria")
+	@Size(max = 255, message = "La ubicacion no puede superar los 255 caracteres")
 	private String ubicacion;
+
+	@NotNull(message = "Requiere autorizacion es obligatorio")
 	private Boolean requiereAutorizacion;
 
 	public ActualizarEquipoRequestDto() {

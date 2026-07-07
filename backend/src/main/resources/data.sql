@@ -3,7 +3,7 @@ INSERT OR IGNORE INTO estados (nombre, descripcion, ambito, esFinal) VALUES
 ('PRESTADO', 'Equipo prestado', 'EQUIPO', false),
 ('MANTENIMIENTO', 'Equipo en mantenimiento', 'EQUIPO', false),
 ('DE_BAJA', 'Equipo dado de baja', 'EQUIPO', true),
-('CREADA', 'Solicitud creada', 'SOLICITUD', false),
+('PENDIENTE', 'Solicitud pendiente de autorizacion', 'SOLICITUD', false),
 ('APROBADA', 'Solicitud aprobada', 'SOLICITUD', false),
 ('DEVUELTA', 'Equipo devuelto', 'SOLICITUD', true),
 ('RECHAZADA', 'Solicitud rechazada', 'SOLICITUD', true),
@@ -14,11 +14,17 @@ INSERT OR IGNORE INTO roles (nombre, descripcion) VALUES
 ('ENCARGADO', 'Encargado de gestionar equipos y solicitudes'),
 ('USUARIO', 'Usuario normal del sistema');
 
-INSERT OR IGNORE INTO usuarios (id, nombre, email, contrasenaHash, rol, activo) VALUES
-(1, 'Admin Sistema', 'admin@pedidos.local', '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiX7Jw8A8L4iZJ0.MJ.YFqVRs.R7U9O', 'ADMIN', true),
-(2, 'Encargado Equipos', 'encargado@pedidos.local', '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiX7Jw8A8L4iZJ0.MJ.YFqVRs.R7U9O', 'ENCARGADO', true),
-(3, 'Usuario Demo', 'usuario@pedidos.local', '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiX7Jw8A8L4iZJ0.MJ.YFqVRs.R7U9O', 'USUARIO', true),
-(4, 'Usuario Inactivo', 'inactivo@pedidos.local', '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiX7Jw8A8L4iZJ0.MJ.YFqVRs.R7U9O', 'USUARIO', false);
+INSERT INTO usuarios (id, nombre, email, contrasenaHash, rol, activo) VALUES
+(1, 'Admin Sistema', 'admin@pedidos.local', '$2a$10$GaD2t02fvAYgd002yQO5X.NsRM2Clm6S0JBB92Tn33MfXAhVSl1.m', 'ADMIN', true),
+(2, 'Encargado Equipos', 'encargado@pedidos.local', '$2a$10$GaD2t02fvAYgd002yQO5X.NsRM2Clm6S0JBB92Tn33MfXAhVSl1.m', 'ENCARGADO', true),
+(3, 'Usuario Demo', 'usuario@pedidos.local', '$2a$10$GaD2t02fvAYgd002yQO5X.NsRM2Clm6S0JBB92Tn33MfXAhVSl1.m', 'USUARIO', true),
+(4, 'Usuario Inactivo', 'inactivo@pedidos.local', '$2a$10$GaD2t02fvAYgd002yQO5X.NsRM2Clm6S0JBB92Tn33MfXAhVSl1.m', 'USUARIO', false)
+ON CONFLICT(id) DO UPDATE SET
+	nombre = excluded.nombre,
+	email = excluded.email,
+	contrasenaHash = excluded.contrasenaHash,
+	rol = excluded.rol,
+	activo = excluded.activo;
 
 INSERT OR IGNORE INTO equipos (id, codigoInventario, nombre, categoria, estado, ubicacion, requiereAutorizacion) VALUES
 (1, 'EQ-0001', 'Notebook Dell Latitude 5420', 'Notebook', 'DISPONIBLE', 'Laboratorio 1', true),
@@ -41,8 +47,11 @@ INSERT OR IGNORE INTO historial_solicitudes (
 	estadoAnterior,
 	estado
 ) VALUES
-(1, 1, '2026-07-01 09:00:00', '2026-07-01 10:15:00', 3, NULL, 'CREADA'),
-(2, 1, '2026-07-01 10:15:00', NULL, 2, 'CREADA', 'APROBADA'),
-(3, 2, '2026-07-02 14:30:00', NULL, 3, NULL, 'CREADA'),
-(4, 3, '2026-07-03 11:00:00', '2026-07-03 12:00:00', 4, NULL, 'CREADA'),
-(5, 3, '2026-07-03 12:00:00', NULL, 2, 'CREADA', 'RECHAZADA');
+(1, 1, '2026-07-01 09:00:00', '2026-07-01 10:15:00', 3, NULL, 'PENDIENTE'),
+(2, 1, '2026-07-01 10:15:00', NULL, 2, 'PENDIENTE', 'APROBADA'),
+(3, 2, '2026-07-02 14:30:00', NULL, 3, NULL, 'PENDIENTE'),
+(4, 3, '2026-07-03 11:00:00', '2026-07-03 12:00:00', 4, NULL, 'PENDIENTE'),
+(5, 3, '2026-07-03 12:00:00', NULL, 2, 'PENDIENTE', 'RECHAZADA');
+
+UPDATE historial_solicitudes SET estado = 'PENDIENTE' WHERE estado = 'CREADA';
+UPDATE historial_solicitudes SET estadoAnterior = 'PENDIENTE' WHERE estadoAnterior = 'CREADA';

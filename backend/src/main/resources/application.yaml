@@ -15,3 +15,7 @@ spring:
   sql:
     init:
       mode: always
+
+jwt:
+  secret: ${JWT_SECRET:clave-desarrollo-pedido-equipos-cambiar-en-produccion-123456789}
+  expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
