@@ -1,4 +1,14 @@
 package com.sgonzalez.pedido_equipos_api.repositories;
 
-public class IEquipoRepository {
+import com.sgonzalez.pedido_equipos_api.models.Equipo;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface IEquipoRepository extends JpaRepository<Equipo, Long> {
+
+	Optional<Equipo> findByCodigoInventario(String codigoInventario);
+
+	boolean existsByCodigoInventario(String codigoInventario);
 }
