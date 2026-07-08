@@ -5,6 +5,8 @@ import com.sgonzalez.pedido_equipos_api.dtos.CrearSolicitudRequestDto;
 import com.sgonzalez.pedido_equipos_api.dtos.SolicitudResponseDto;
 import com.sgonzalez.pedido_equipos_api.services.GestorRegistrarSolicitud;
 import com.sgonzalez.pedido_equipos_api.utils.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/solicitudes")
 @CrossOrigin(origins = "*")
+@Tag(name = "Solicitudes", description = "Registro de solicitudes de equipos")
 public class PantRegistrarSolicitud {
 
     private final GestorRegistrarSolicitud gestorRegistrarSolicitud;
@@ -26,6 +29,7 @@ public class PantRegistrarSolicitud {
     }
 
     @PostMapping
+    @Operation(summary = "Crea una solicitud", description = "Registra una nueva solicitud para un equipo y define su estado inicial segun las reglas de autorizacion.")
     public ResponseEntity<ApiResponseDto<SolicitudResponseDto>> registrarSolicitud(@Valid @RequestBody CrearSolicitudRequestDto request) {
         SolicitudResponseDto solicitud = gestorRegistrarSolicitud.registrarSolicitud(request);
         return ResponseEntity

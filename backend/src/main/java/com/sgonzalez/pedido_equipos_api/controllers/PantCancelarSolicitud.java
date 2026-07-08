@@ -4,6 +4,8 @@ import com.sgonzalez.pedido_equipos_api.dtos.ApiResponseDto;
 import com.sgonzalez.pedido_equipos_api.dtos.SolicitudResponseDto;
 import com.sgonzalez.pedido_equipos_api.services.GestorCancelarSolicitud;
 import com.sgonzalez.pedido_equipos_api.utils.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/solicitudes")
 @CrossOrigin(origins = "*")
+@Tag(name = "Solicitudes", description = "Cambio de estado de solicitudes")
 public class PantCancelarSolicitud {
 
 	private final GestorCancelarSolicitud gestorCancelarSolicitud;
@@ -24,6 +27,7 @@ public class PantCancelarSolicitud {
 	}
 
 	@PatchMapping("/{numSolicitud}/cancelar")
+	@Operation(summary = "Cancela una solicitud", description = "Cancela una solicitud pendiente o aprobada. Puede hacerlo el propietario o un ADMIN/ENCARGADO.")
 	public ResponseEntity<ApiResponseDto<SolicitudResponseDto>> cancelarSolicitud(
 			@PathVariable Long numSolicitud,
 			Authentication authentication

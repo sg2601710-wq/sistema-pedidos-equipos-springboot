@@ -1,1 +1,0 @@
-dist no es necesaria para ejecutar el proyecto en modo desarrollo, porque Vite sirve la app directamente desde src con npm run dev. La carpeta dist sirve para producción: se genera con npm run build y contiene los archivos estáticos optimizados que se suben o sirven desde un servidor web. Es la versión final compilada del frontend

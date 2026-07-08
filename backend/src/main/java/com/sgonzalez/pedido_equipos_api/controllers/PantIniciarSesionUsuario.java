@@ -5,6 +5,8 @@ import com.sgonzalez.pedido_equipos_api.dtos.IniciarSesionRequestDto;
 import com.sgonzalez.pedido_equipos_api.dtos.IniciarSesionResponseDto;
 import com.sgonzalez.pedido_equipos_api.services.GestorIniciarSesionUsuario;
 import com.sgonzalez.pedido_equipos_api.utils.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/usuarios/sesion")
 @CrossOrigin(origins = "*")
+@Tag(name = "Autenticacion", description = "Inicio de sesion y emision de JWT")
 public class PantIniciarSesionUsuario {
 
 	private final GestorIniciarSesionUsuario gestorIniciarSesionUsuario;
@@ -25,6 +28,7 @@ public class PantIniciarSesionUsuario {
 	}
 
 	@PostMapping
+	@Operation(summary = "Inicia sesion", description = "Valida credenciales y devuelve un JWT para consumir endpoints protegidos.", security = {})
 	public ResponseEntity<ApiResponseDto<IniciarSesionResponseDto>> iniciarSesion(
 			@Valid @RequestBody IniciarSesionRequestDto request
 	) {

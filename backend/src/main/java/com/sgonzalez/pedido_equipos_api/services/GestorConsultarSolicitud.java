@@ -55,24 +55,39 @@ public class GestorConsultarSolicitud {
 	}
 
 	public Page<SolicitudResponseDto> consultarSolicitudes(SolicitudFiltroDto filtros) {
+		return consultarSolicitudes(filtros, null);
+	}
+
+	public Page<SolicitudResponseDto> consultarSolicitudes(SolicitudFiltroDto filtros, String emailAutenticado) {
 		SolicitudFiltroDto filtrosNormalizados = filtros == null ? new SolicitudFiltroDto() : filtros;
 
-		if (filtrosNormalizados.getUsuarioId() == null) {
-			throw new IllegalArgumentException("El usuario es obligatorio para consultar solicitudes");
-		}
-
-		Usuario usuario = usuarioRepository.findById(filtrosNormalizados.getUsuarioId())
-				.orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+		Usuario usuario = buscarUsuarioConsulta(filtrosNormalizados, emailAutenticado);
 
 		Pageable pageable = crearPageable(
 				filtrosNormalizados.getPage(),
 				filtrosNormalizados.getSize(),
+				filtrosNormalizados.getLimit(),
 				filtrosNormalizados.getSortBy(),
-				filtrosNormalizados.getSortDirection()
+				filtrosNormalizados.getSortDirection(),
+				filtrosNormalizados.getOrder()
 		);
 
 		return solicitudRepository.findAll(crearSpecification(filtrosNormalizados, usuario), pageable)
 				.map(solicitudDtoMapper::toResponseDto);
+	}
+
+	private Usuario buscarUsuarioConsulta(SolicitudFiltroDto filtros, String emailAutenticado) {
+		if (filtros.getUsuarioId() != null) {
+			return usuarioRepository.findById(filtros.getUsuarioId())
+					.orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+		}
+
+		if (!tieneTexto(emailAutenticado)) {
+			throw new IllegalArgumentException("El usuario es obligatorio para consultar solicitudes");
+		}
+
+		return usuarioRepository.findByEmail(emailAutenticado)
+				.orElseThrow(() -> new IllegalArgumentException("Usuario autenticado no encontrado"));
 	}
 
 	private boolean puedeVerTodasLasSolicitudes(Usuario usuario) {
@@ -109,6 +124,13 @@ public class GestorConsultarSolicitud {
 				));
 			}
 
+			if (tieneTexto(filtros.getCategoria())) {
+				predicates.add(criteriaBuilder.equal(
+						criteriaBuilder.lower(root.get("equipo").get("categoria")),
+						normalizar(filtros.getCategoria())
+				));
+			}
+
 			if (tieneTexto(filtros.getEstado())) {
 				Join<Solicitud, HistorialSolicitud> historial = root.join("historialSolicitud", JoinType.INNER);
 				predicates.add(criteriaBuilder.isNull(historial.get("fechaHoraFin")));
@@ -116,6 +138,23 @@ public class GestorConsultarSolicitud {
 						criteriaBuilder.lower(historial.get("estado").get("nombre")),
 						normalizar(filtros.getEstado())
 				));
+			}
+
+			if (tieneTexto(filtros.getBuscar())) {
+				String busqueda = like(filtros.getBuscar());
+				predicates.add(criteriaBuilder.or(
+						criteriaBuilder.like(criteriaBuilder.lower(root.get("motivo")), busqueda),
+						criteriaBuilder.like(criteriaBuilder.lower(root.get("equipo").get("nombre")), busqueda),
+						criteriaBuilder.like(criteriaBuilder.lower(root.get("equipo").get("codigoInventario")), busqueda)
+				));
+			}
+
+			if (filtros.getDesde() != null) {
+				predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("fechaRetiro"), filtros.getDesde()));
+			}
+
+			if (filtros.getHasta() != null) {
+				predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("fechaRetiro"), filtros.getHasta()));
 			}
 
 			if (filtros.getFechaRetiroDesde() != null) {
@@ -142,22 +181,35 @@ public class GestorConsultarSolicitud {
 		};
 	}
 
-	private Pageable crearPageable(Integer page, Integer size, String sortBy, String sortDirection) {
-		int pageNormalizada = page == null || page < 0 ? 0 : page;
-		int sizeNormalizado = size == null || size <= 0 ? 10 : Math.min(size, 100);
+	private Pageable crearPageable(
+			Integer page,
+			Integer size,
+			Integer limit,
+			String sortBy,
+			String sortDirection,
+			String order
+	) {
+		int pageNormalizada = page == null || page <= 1 ? 0 : page - 1;
+		Integer sizeSolicitado = limit == null ? size : limit;
+		int sizeNormalizado = sizeSolicitado == null || sizeSolicitado <= 0 ? 10 : Math.min(sizeSolicitado, 100);
 		String sortByNormalizado = normalizarSortBy(sortBy);
-		Sort.Direction direction = "asc".equalsIgnoreCase(sortDirection) ? Sort.Direction.ASC : Sort.Direction.DESC;
+		String directionSolicitada = tieneTexto(order) ? order : sortDirection;
+		Sort.Direction direction = "asc".equalsIgnoreCase(directionSolicitada) ? Sort.Direction.ASC : Sort.Direction.DESC;
 
 		return PageRequest.of(pageNormalizada, sizeNormalizado, Sort.by(direction, sortByNormalizado));
 	}
 
 	private String normalizarSortBy(String sortBy) {
 		Map<String, String> sortPermitido = Map.of(
+				"id", "numSolicitud",
 				"numSolicitud", "numSolicitud",
 				"fechaRetiro", "fechaRetiro",
 				"fechaDevolucion", "fechaDevolucion",
 				"motivo", "motivo",
 				"equipo", "equipo.nombre",
+				"equipoNombre", "equipo.nombre",
+				"categoria", "equipo.categoria",
+				"estado", "historialSolicitud.estado.nombre",
 				"solicitante", "solicitante.nombre"
 		);
 

@@ -25,7 +25,6 @@ function ListaSolicitudes({ solicitudes = [], equipos = [], onCambiarEstado }) {
   const estadoClase = {
     pendiente: 'text-bg-warning',
     aprobada: 'text-bg-success',
-    rechazada: 'text-bg-danger',
     cancelada: 'text-bg-secondary',
     devuelta: 'text-bg-info',
   }
@@ -87,22 +86,13 @@ function ListaSolicitudes({ solicitudes = [], equipos = [], onCambiarEstado }) {
                   )}
 
                   {esRolAdministrativo && solicitud.estado === 'pendiente' && (
-                    <>
-                      <button
-                        className="btn btn-sm btn-outline-success"
-                        type="button"
-                        onClick={() => onCambiarEstado(solicitud.id, 'aprobada')}
-                      >
-                        Aprobar
-                      </button>
-                      <button
-                        className="btn btn-sm btn-outline-danger"
-                        type="button"
-                        onClick={() => onCambiarEstado(solicitud.id, 'rechazada')}
-                      >
-                        Rechazar
-                      </button>
-                    </>
+                    <button
+                      className="btn btn-sm btn-outline-success"
+                      type="button"
+                      onClick={() => onCambiarEstado(solicitud.id, 'aprobada')}
+                    >
+                      Aprobar
+                    </button>
                   )}
 
                   {esRolAdministrativo && solicitud.estado === 'aprobada' && (

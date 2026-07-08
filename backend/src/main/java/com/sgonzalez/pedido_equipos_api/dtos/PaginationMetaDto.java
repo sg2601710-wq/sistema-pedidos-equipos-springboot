@@ -6,12 +6,15 @@ public class PaginationMetaDto {
 
 	private Integer page;
 	private Integer size;
+	private Integer limit;
+	private Long total;
 	private Long totalElements;
 	private Integer totalPages;
 	private Boolean hasNext;
 	private Boolean hasPrevious;
 	private String sortBy;
 	private String sortDirection;
+	private String order;
 
 	public PaginationMetaDto() {
 	}
@@ -19,33 +22,43 @@ public class PaginationMetaDto {
 	public PaginationMetaDto(
 			Integer page,
 			Integer size,
+			Integer limit,
+			Long total,
 			Long totalElements,
 			Integer totalPages,
 			Boolean hasNext,
 			Boolean hasPrevious,
 			String sortBy,
-			String sortDirection
+			String sortDirection,
+			String order
 	) {
 		this.page = page;
 		this.size = size;
+		this.limit = limit;
+		this.total = total;
 		this.totalElements = totalElements;
 		this.totalPages = totalPages;
 		this.hasNext = hasNext;
 		this.hasPrevious = hasPrevious;
 		this.sortBy = sortBy;
 		this.sortDirection = sortDirection;
+		this.order = order;
 	}
 
 	public static PaginationMetaDto from(Page<?> page, String sortBy, String sortDirection) {
+		String direction = sortDirection == null ? "asc" : sortDirection;
 		return new PaginationMetaDto(
-				page.getNumber(),
+				page.getNumber() + 1,
 				page.getSize(),
+				page.getSize(),
+				page.getTotalElements(),
 				page.getTotalElements(),
 				page.getTotalPages(),
 				page.hasNext(),
 				page.hasPrevious(),
 				sortBy,
-				sortDirection
+				direction,
+				direction
 		);
 	}
 
@@ -63,6 +76,22 @@ public class PaginationMetaDto {
 
 	public void setSize(Integer size) {
 		this.size = size;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public Long getTotal() {
+		return total;
+	}
+
+	public void setTotal(Long total) {
+		this.total = total;
 	}
 
 	public Long getTotalElements() {
@@ -111,5 +140,13 @@ public class PaginationMetaDto {
 
 	public void setSortDirection(String sortDirection) {
 		this.sortDirection = sortDirection;
+	}
+
+	public String getOrder() {
+		return order;
+	}
+
+	public void setOrder(String order) {
+		this.order = order;
 	}
 }

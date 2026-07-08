@@ -5,6 +5,8 @@ import com.sgonzalez.pedido_equipos_api.dtos.CrearUsuarioRequestDto;
 import com.sgonzalez.pedido_equipos_api.dtos.UsuarioResponseDto;
 import com.sgonzalez.pedido_equipos_api.services.GestorRegistrarUsuario;
 import com.sgonzalez.pedido_equipos_api.utils.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/usuarios")
 @CrossOrigin(origins = "*")
+@Tag(name = "Usuarios", description = "Registro y administracion de usuarios")
 public class PantRegistrarUsuario {
 
 	private final GestorRegistrarUsuario gestorRegistrarUsuario;
@@ -26,6 +29,7 @@ public class PantRegistrarUsuario {
 	}
 
 	@PostMapping
+	@Operation(summary = "Registra un usuario", description = "Crea un nuevo usuario con contrasena hasheada.", security = {})
 	public ResponseEntity<ApiResponseDto<UsuarioResponseDto>> registrarUsuario(@Valid @RequestBody CrearUsuarioRequestDto request) {
 		UsuarioResponseDto usuario = gestorRegistrarUsuario.registrarUsuario(request);
 		return ResponseEntity

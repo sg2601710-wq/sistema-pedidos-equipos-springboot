@@ -60,9 +60,9 @@ function formatearAccion(accion) {
     creacion: 'Creación',
     edicion: 'Edición',
     aprobacion: 'Aprobación',
-    rechazo: 'Rechazo',
     cancelacion: 'Cancelación',
     devolucion: 'Devolución',
+    cambio_estado: 'Cambio de estado',
   }
 
   return acciones[accion] ?? accion

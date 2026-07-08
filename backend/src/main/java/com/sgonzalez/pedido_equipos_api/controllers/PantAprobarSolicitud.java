@@ -4,6 +4,8 @@ import com.sgonzalez.pedido_equipos_api.dtos.ApiResponseDto;
 import com.sgonzalez.pedido_equipos_api.dtos.SolicitudResponseDto;
 import com.sgonzalez.pedido_equipos_api.services.GestorAprobarSolicitud;
 import com.sgonzalez.pedido_equipos_api.utils.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/solicitudes")
 @CrossOrigin(origins = "*")
+@Tag(name = "Solicitudes", description = "Cambio de estado de solicitudes")
 public class PantAprobarSolicitud {
 
 	private final GestorAprobarSolicitud gestorAprobarSolicitud;
@@ -24,6 +27,7 @@ public class PantAprobarSolicitud {
 	}
 
 	@PatchMapping("/{numSolicitud}/aprobar")
+	@Operation(summary = "Aprueba una solicitud", description = "Aprueba una solicitud pendiente. Requiere rol ADMIN o ENCARGADO.")
 	public ResponseEntity<ApiResponseDto<SolicitudResponseDto>> aprobarSolicitud(
 			@PathVariable Long numSolicitud,
 			Authentication authentication

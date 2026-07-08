@@ -18,7 +18,6 @@ const normalizarSolicitud = (solicitud) => ({
 
 const mensajesConfirmacion = {
   aprobar: '¿Confirmás que querés aprobar esta solicitud?',
-  rechazar: '¿Confirmás que querés rechazar esta solicitud?',
   cancelar: '¿Confirmás que querés cancelar esta solicitud?',
   devolver: '¿Confirmás que querés marcar esta solicitud como devuelta?',
 }
@@ -146,7 +145,6 @@ function PaginaSolicitudes() {
   const handleCambiarEstado = async (id, nuevoEstado) => {
     const accion = {
       aprobada: 'aprobar',
-      rechazada: 'rechazar',
       cancelada: 'cancelar',
       devuelta: 'devolver',
     }[nuevoEstado]
@@ -201,7 +199,6 @@ function PaginaSolicitudes() {
                 <option value="todas">Todas</option>
                 <option value="pendiente">Pendientes</option>
                 <option value="aprobada">Aprobadas</option>
-                <option value="rechazada">Rechazadas</option>
                 <option value="cancelada">Canceladas</option>
                 <option value="devuelta">Devueltas</option>
               </select>

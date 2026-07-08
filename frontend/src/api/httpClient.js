@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080'
 
 /* Esto crea un cliente HTTP llamado api.
 
@@ -9,7 +9,7 @@ Cliente HTTP: programa o aplicación que inicia una solicitud a un servidor web 
 */
 
 const api = axios.create({
-  // Esto nos define que cada vez que hagamos una petición http, la url sea siempre http://localhost:3000/api...
+  // Esto nos define que cada vez que hagamos una petición http, la url sea siempre la del backend.
   baseURL: API_BASE_URL,
   // Esto nos indica que por defecto las request van a enviar datos en formato JSON
   headers: {

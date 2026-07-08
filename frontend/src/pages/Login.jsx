@@ -50,11 +50,11 @@ function Login() {
 
         <form onSubmit={handleSubmit} className="d-grid gap-3">
           <div>
-            <label className="form-label">Usuario</label>
+            <label className="form-label">Email</label>
             <input
               className="form-control"
-              type="text"
-              placeholder="Nombre de Usuario"
+              type="email"
+              placeholder="usuario@correo.com"
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
             />

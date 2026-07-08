@@ -5,6 +5,8 @@ import com.sgonzalez.pedido_equipos_api.dtos.ApiResponseDto;
 import com.sgonzalez.pedido_equipos_api.dtos.SolicitudResponseDto;
 import com.sgonzalez.pedido_equipos_api.services.GestorEditarSolicitud;
 import com.sgonzalez.pedido_equipos_api.utils.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/solicitudes")
 @CrossOrigin(origins = "*")
+@Tag(name = "Solicitudes", description = "Actualizacion de solicitudes")
 public class PantEditarSolicitud {
 
 	private final GestorEditarSolicitud gestorEditarSolicitud;
@@ -27,6 +30,7 @@ public class PantEditarSolicitud {
 	}
 
 	@PutMapping("/{numSolicitud}")
+	@Operation(summary = "Edita una solicitud", description = "Permite editar una solicitud pendiente si el usuario es propietario o tiene rol ADMIN/ENCARGADO.")
 	public ResponseEntity<ApiResponseDto<SolicitudResponseDto>> editarSolicitud(
 			@PathVariable Long numSolicitud,
 			@Valid @RequestBody ActualizarSolicitudRequestDto request,
